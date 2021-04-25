@@ -1,3 +1,4 @@
+const { response } = require("express");
 const user = require("../models/user");
 
 module.exports = {
@@ -45,5 +46,32 @@ module.exports = {
     } catch (err) {
       res.send("Error" + err);
     }
+  },
+
+  updateById: (req,res)=>{
+    const userid = req.params.id;
+    const gender = req.body.gender;
+    const name = req.body.name;
+    user.findById(userid)
+    .then((result)=>{
+      result.name = name;
+      result.gender = gender;
+      return result.save();
+      
+      })
+      .then((response)=>{
+        res.json({
+        data:response ,
+        status: 1,
+        message : "REQUEST_SUCCESS"
+      });
+    })
+    .catch((err)=>{
+      res.json({
+        err: err,
+      status : 0,
+      message: "REQUEST_FAIL"
+      });
+    });
   },
 };
