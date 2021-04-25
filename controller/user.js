@@ -48,30 +48,28 @@ module.exports = {
     }
   },
 
-  updateById: (req,res)=>{
+  updateById: (req, res) => {
     const userid = req.params.id;
     const gender = req.body.gender;
     const name = req.body.name;
-    user.findById(userid)
-    .then((result)=>{
-      result.name = name;
-      result.gender = gender;
-      return result.save();
-      
-      })
-      .then((response)=>{
+    user
+      .findById(userid)
+      .then((result) => {
+        result.name = name;
+        result.gender = gender;
+        result.save();
         res.json({
-        data:response ,
-        status: 1,
-        message : "REQUEST_SUCCESS"
+          data: result,
+          status: 1,
+          message: "REQUEST_SUCCESS",
+        });
+      })
+      .catch((err) => {
+        res.json({
+          err: err,
+          status: 0,
+          message: "REQUEST_FAIL",
+        });
       });
-    })
-    .catch((err)=>{
-      res.json({
-        err: err,
-      status : 0,
-      message: "REQUEST_FAIL"
-      });
-    });
   },
 };
